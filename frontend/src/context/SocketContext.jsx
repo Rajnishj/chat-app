@@ -10,7 +10,12 @@ export const SocketContextProvider = ({ children }) => {
     const { authUser } = useAuth()
     useEffect(() => {
         if(authUser){
-           const socket = io('http://localhost:5000',{
+        //    const socket = io('http://localhost:5000',{
+        //     query:  {
+        //         userId: authUser._id,
+        //     },
+        //    })
+        const socket = io('https://chat-app-rsij.onrender.com',{
             query:  {
                 userId: authUser._id,
             },
