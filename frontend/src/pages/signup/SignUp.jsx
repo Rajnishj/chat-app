@@ -22,16 +22,16 @@ const SignUp = () => {
     setInputs({ ...inputs, gender });
   };
 
-  const { loading, authenticated } = userAuth(
-    "/api/auth/signup",
-    inputs,
-    "User signed in successfully!!!!",
-    false
-  );
+  const { loading, authenticated } = userAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await authenticated();
+    await authenticated(
+      "/api/auth/signup",
+      inputs,
+      "User signed in successfully!!!!",
+      false
+    );
   };
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">

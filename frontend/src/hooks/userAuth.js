@@ -2,10 +2,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const userAuth = (path, body, message, logout) => {
+const userAuth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const authenticated = async () => {
+  const authenticated = async (path, body, message, logout) => {
     setLoading(true);
     try {
       const res = await fetch(path, {
@@ -20,20 +20,20 @@ const userAuth = (path, body, message, logout) => {
       if (data.error) {
         throw new Error(data.error);
       }
-     if(data.message){
-		if (logout) {
-			localStorage.clear();
-			navigate("/login");
-		  } else {
-			localStorage.setItem("isAuthenticated", true);
-			localStorage.setItem("chat-user", JSON.stringify(data.user));
-			navigate("/");
-		  }
-	
-		  toast.success(message);
-	 }else{
-		toast.error(data.err)
-	 }
+      if (data.message) {
+        if (!logout) {
+          localStorage.setItem("isAuthenticated", true);
+          localStorage.setItem("chat-user", JSON.stringify(data.user));
+          navigate("/");
+        } else {
+          localStorage.clear();
+          navigate("/login");
+        }
+
+        toast.success(message);
+      } else {
+        toast.error(data.err);
+      }
     } catch (error) {
       toast.error(error.message);
     } finally {
