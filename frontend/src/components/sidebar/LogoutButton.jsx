@@ -1,15 +1,20 @@
-import { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
-//import useLogout from "../../hooks/useLogout";
+import userAuth from "../../hooks/userAuth";
 
 const LogoutButton = () => {
-    const [loading,setLoading] = useState(false)
-	//const { loading, logout } = useLogout();
-
+	const { loading, authenticated } = userAuth(
+		"/api/auth/logout",
+		null,
+		"User logged out successfully!!!",
+		true
+	  );
+const handleLogout = async() => {
+	await authenticated()
+}
 	return (
 		<div className='mt-auto'>
 			{!loading ? (
-				<BiLogOut className='w-6 h-6 text-white cursor-pointer' />
+				<BiLogOut onClick={handleLogout} className='w-6 h-6 text-white cursor-pointer' />
 			) : (
 				<span className='loading loading-spinner'></span>
 			)}

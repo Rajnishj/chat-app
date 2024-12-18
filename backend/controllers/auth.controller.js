@@ -5,15 +5,13 @@ import getnerateJWTtokenAndSetCookies from "../utils/generateToken.js";
 export const signUp = async (req, res) => {
   try {
     const { fullName, username, password, confirmPassword, gender } = req.body;
-    if (password !== confirmPassword)
-      res.status(400).json({
-        err: "Password don't match please check",
-      });
+    if (password !== confirmPassword){
+     throw new Error("Password don't match please check")
+    }
+     
     const user = await User.findOne({ username });
     if (user) {
-      res.status(400).json({
-        err: "User already exist",
-      });
+     throw new Error("User already exist")
     }
     //Hash your password
     const salt = await bcryptjs.genSalt(10)
@@ -68,13 +66,15 @@ export const login = async(req, res) => {
     res.status(400).json({
       err:"username or password doesn't match"
     })
+   }else{
+    await getnerateJWTtokenAndSetCookies(user._id,res)
+    const responseUser = await User.findOne({username}).select('-password') // to exclude the user from response we use .select method that remove password from response
+    res.status(200).json({
+     message:"User logged in successfully",
+     user: responseUser
+    })
    }
-   await getnerateJWTtokenAndSetCookies(user._id,res)
-   const responseUser = await User.findOne({username}).select('-password') // to exclude the user from response we use .select method that remove password from response
-   res.status(200).json({
-    message:"User logged in successfully",
-    user: responseUser
-   })
+  
   } catch (error) {
    res.status(500).json({
     err: " Error while login",
