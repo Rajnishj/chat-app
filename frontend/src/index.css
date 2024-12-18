@@ -10,25 +10,50 @@ body {
   background-attachment: fixed;
 }
 
-
-/* dark mode looking scrollbar */
-::-webkit-scrollbar {
-	width: 8px;
-}
-
-::-webkit-scrollbar-track {
-	background: #555;
-}
-
-::-webkit-scrollbar-thumb {
-	background: #121212;
-	border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #242424;
-}
-
+/* Global scrollbar styles */
+html {
+	/* For Firefox */
+	scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
+	scrollbar-width: thin; /* Options: auto, thin, none */
+  }
+  
+  /* WebKit-based browsers */
+  ::-webkit-scrollbar {
+	width: 8px; /* Width of the scrollbar */
+	height: 8px; /* Height of the scrollbar (for horizontal scrollbars) */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+	background-color: #888; /* Color of the scrollbar thumb */
+	border-radius: 4px; /* Rounded corners for the thumb */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+	background-color: #555; /* Color when hovering over the thumb */
+  }
+  
+  ::-webkit-scrollbar-track {
+	background-color: #f1f1f1; /* Color of the scrollbar track */
+	border-radius: 4px; /* Rounded corners for the track */
+  }
+  
+/* ::-webkit-scrollbar {
+	width: 8px !important;
+  }
+  
+  ::-webkit-scrollbar-track {
+	background: #555 8px !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+	background: #121212 8px !important;
+	border-radius: 5px 8px !important;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+	background: #242424 8px !important;
+  } */
+  
 /* SHAKE ANIMATION ON HORIZONTAL DIRECTION */
 .shake {
 	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.2s both;

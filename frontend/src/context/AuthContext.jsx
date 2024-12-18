@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("chat-user")) || null);
   const navigate = useNavigate();
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         isAuthenticated,
         isAuthInitialized,
+        authUser,
         loginSignUp,
         logout,
       }}>

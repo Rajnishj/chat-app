@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const userAuth = (path, body, message, logout) => {
-  console.log(path, body, message);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const authenticated = async () => {
@@ -23,10 +22,11 @@ const userAuth = (path, body, message, logout) => {
       }
      if(data.message){
 		if (logout) {
-			localStorage.removeItem("isAuthenticated");
+			localStorage.clear();
 			navigate("/login");
 		  } else {
 			localStorage.setItem("isAuthenticated", true);
+			localStorage.setItem("chat-user", JSON.stringify(data.user));
 			navigate("/");
 		  }
 	
