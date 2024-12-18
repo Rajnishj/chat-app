@@ -21,11 +21,14 @@ const userAuth = () => {
         throw new Error(data.error);
       }
       if (data.message) {
+        console.log("called ourside data.message")
         if (!logout) {
+          console.log("called insdie logout side data.message")
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("chat-user", JSON.stringify(data.user));
           navigate("/");
         } else {
+          console.log("called outside logout side data.message")
           localStorage.clear();
           navigate("/login");
         }
