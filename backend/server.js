@@ -16,9 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Server is connected with port 8000 hello world Chrome V8 server");
-});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
