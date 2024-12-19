@@ -1,12 +1,29 @@
-import { useState } from "react";
-import { BsSend, BsImage, BsXCircle } from "react-icons/bs";
+import { useState, useRef, useEffect } from "react";
+import { BsSend, BsImage, BsXCircle, BsEmojiSmile } from "react-icons/bs";
 import useSendMessage from "../../hooks/useSendMessage";
+
+const smileys = Array.from({ length: 100 }, (_, i) => String.fromCodePoint(0x1f600 + i % 80));
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState(null); // State for image preview
   const [fileInputValue, setFileInputValue] = useState(""); // State to reset file input
+  const [showSmileys, setShowSmileys] = useState(false); // Show/hide smiley selector
   const { loading, sendMessage } = useSendMessage();
+  const smileyRef = useRef(null); // Ref to handle click outside
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (smileyRef.current && !smileyRef.current.contains(event.target)) {
+        setShowSmileys(false); // Close smiley selector on outside click
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +45,11 @@ const MessageInput = () => {
   const removePreview = () => {
     setPreview(null); // Clear the preview
     setFileInputValue(""); // Reset file input
+  };
+
+  const handleSmileyClick = (smiley) => {
+    setMessage((prev) => prev + smiley);
+    setShowSmileys(false); // Hide smiley selector after choosing
   };
 
   return (
@@ -55,6 +77,28 @@ const MessageInput = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
+        {/* Smiley Selector */}
+        <button
+          type="button"
+          onClick={() => setShowSmileys((prev) => !prev)}
+          className="absolute inset-y-0 end-20 flex items-center pe-3 text-gray-400 hover:text-white">
+          <BsEmojiSmile size={20} />
+        </button>
+        {showSmileys && (
+          <div
+            ref={smileyRef}
+            className="absolute bottom-full right-0 bg-gray-700 p-2 rounded-lg shadow-lg grid grid-cols-10 gap-1">
+            {smileys.map((smiley, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleSmileyClick(smiley)}
+                className="text-xl hover:bg-gray-600 rounded-lg p-1">
+                {smiley}
+              </button>
+            ))}
+          </div>
+        )}
         {/* Upload Icon */}
         <label
           htmlFor="image-upload"
