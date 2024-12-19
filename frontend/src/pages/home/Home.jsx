@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
+    <div className="h-screen max-sm:h-[640px] flex flex-col md:flex-row md:h-[640px] overflow-y-auto max-sm:overflow-scroll">
       <Sidebar />
       <MessageContainer />
     </div>
   );
 };
+
 export default Home;
