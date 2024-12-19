@@ -1,13 +1,24 @@
 import Conversation from "../models/conversation.model.js"
 import Message from "../models/message.model.js"
 import { getRecieverSocketId, io } from "../socket/socket.js"
+import { convertImageToInCloudnary } from "../utils/validation.js"
 
 export const sendMessage = async(req,res)=> {
-    
    try {
     const { message } = req.body
+    const file = req.file; 
     const {id:recieverId} = req.params
     const senderId = req.user._id
+
+    let cloudResponse;
+    if (file) {
+      try {
+        cloudResponse = await convertImageToInCloudnary(file);
+      } catch (error) {
+        console.error("Cloudinary upload error:", error);
+      }
+    }
+
     let conversation = await Conversation.findOne({
         participants: {$all:[senderId,recieverId]}
     })
@@ -19,7 +30,8 @@ export const sendMessage = async(req,res)=> {
     const newMessage = new Message({
         senderId,
         recieverId,
-        message
+        message,
+        image: cloudResponse?.secure_url
     })
     if(newMessage){
         conversation.message.push(newMessage._id)

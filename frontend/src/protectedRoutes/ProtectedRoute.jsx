@@ -2,18 +2,18 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 
-
 const ProtectedRoutes = () => {
-    const {isAuthenticated , isAuthInitialized } = useAuth()
+  const { isAuthenticated, isAuthInitialized } = useAuth();
 
-    if(!isAuthInitialized){
-        return null
-    }
-    if(!isAuthenticated){
-        return <Navigate to="/login" />
-    }
+  if (!isAuthInitialized) {
+    return null; // Or a loading spinner
+  }
 
-    return <Outlet />
-}
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-export default ProtectedRoutes
+  return <Outlet />;
+};
+
+export default ProtectedRoutes;

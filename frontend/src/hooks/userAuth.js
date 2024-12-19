@@ -1,11 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const userAuth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const authenticated = async (path, body, message, logout) => {
+  const { login, logout } = useAuth();
+
+  const authenticated = async (path, body, message, isLogout = false) => {
     setLoading(true);
     try {
       const res = await fetch(path, {
@@ -13,27 +16,23 @@ const userAuth = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        ...(logout ? {} : { body: JSON.stringify(body) }),
+        ...(isLogout ? {} : { body: JSON.stringify(body) }),
       });
 
       const data = await res.json();
       if (data.error) {
         throw new Error(data.error);
       }
+
       if (data.message) {
-        console.log("called ourside data.message")
-        if (!logout) {
-          console.log("called insdie logout side data.message")
-          localStorage.setItem("isAuthenticated", true);
-          localStorage.setItem("chat-user", JSON.stringify(data.user));
+        if (!isLogout) {
+          login(data.user); // Update the context instead of localStorage directly
           navigate("/");
+          toast.success(message);
         } else {
-          console.log("called outside logout side data.message")
-          localStorage.clear();
+          logout(); // Clear context and localStorage
           navigate("/login");
         }
-
-        toast.success(message);
       } else {
         toast.error(data.err);
       }
@@ -46,4 +45,5 @@ const userAuth = () => {
 
   return { loading, authenticated };
 };
+
 export default userAuth;

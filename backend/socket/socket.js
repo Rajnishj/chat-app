@@ -22,6 +22,7 @@ io.on("connection", (socket) => {
 
   //io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers",Object.keys(userSocketMap))
+  console.log("User Connected", socket.id);
   socket.on("disconnect", () => {
     delete userSocketMap[userId]
     io.emit("getOnlineUsers",Object.keys(userSocketMap))
