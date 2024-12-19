@@ -23,7 +23,8 @@ const Login = () => {
       "/api/auth/login",
       formData,
       "User logged in successfully",
-      false
+      false,
+      "/"
     );
   };
   return (

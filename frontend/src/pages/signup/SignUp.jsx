@@ -30,7 +30,8 @@ const SignUp = () => {
       "/api/auth/signup",
       inputs,
       "User signed in successfully!!!!",
-      false
+      false,
+      "/login"
     );
   };
   return (

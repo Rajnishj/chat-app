@@ -8,10 +8,10 @@ const userAuth = () => {
   const navigate = useNavigate();
   const { login, logout } = useAuth();
 
-  const authenticated = async (path, body, message, isLogout = false) => {
+  const authenticated = async (url, body, message, isLogout = false,path) => {
     setLoading(true);
     try {
-      const res = await fetch(path, {
+      const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,11 +27,11 @@ const userAuth = () => {
       if (data.message) {
         if (!isLogout) {
           login(data.user); // Update the context instead of localStorage directly
-          navigate("/");
+          navigate(path);
           toast.success(message);
         } else {
           logout(); // Clear context and localStorage
-          navigate("/login");
+          navigate(path);
         }
       } else {
         toast.error(data.err);

@@ -8,7 +8,8 @@ const LogoutButton = () => {
       "/api/auth/logout",
       null,
       "User logged out successfully!!!",
-      true
+      true,
+      "/login"
     );
   };
   return (
